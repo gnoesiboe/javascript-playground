@@ -1,11 +1,55 @@
 var React = require('react'),
     AceEditor = require('react-ace'),
-    brace = require('brace');
+    brace = require('brace'),
+    appDispatcher = require('./../utility/appDispatcher'),
+    actionConstants = require('./../constants/actionConstants');
 
+// theme and modus for ace editor
 require('brace/mode/javascript');
 require('brace/theme/tomorrow_night');
 
 module.exports = React.createClass({
+
+    /**
+     * @type {String|null}
+     */
+    dispatcherId: null,
+
+    componentDidMount: function () {
+        this.dispatcherId = appDispatcher.register(this.onActionDispatched);
+    },
+
+    componentWillUnmount: function () {
+        appDispatcher.unregister(this.dispatcherId);
+
+        this.dispatcherId = null;
+    },
+
+    /**
+     * @param {Object} action
+     */
+    onActionDispatched: function (action) {
+        switch (action.type) {
+            case actionConstants.RUN_CURRENT_SLIDE:
+                this.handleRunCurrentSlideAction(action);
+                break;
+
+            default:
+                // do nothing as this action is not relevant for ths component
+                break;
+        }
+    },
+
+    /**
+     * @param {Object} action
+     */
+    handleRunCurrentSlideAction: function (action) {
+        if (this.state.focussed !== true) {
+            return;
+        }
+
+        this.runContents();
+    },
 
     /**
      * @returns {Object}
@@ -14,7 +58,8 @@ module.exports = React.createClass({
         var slide = this.props.slide;
 
         return {
-            contents: slide.contents
+            contents: slide.contents,
+            focussed: false
         };
     },
 
@@ -31,6 +76,12 @@ module.exports = React.createClass({
      * @param {String} event
      */
     onRunClick: function (event) {
+        event.preventDefault();
+
+        this.runContents();
+    },
+
+    runContents: function () {
         var contents = this.state.contents;
 
         console.clear();
@@ -46,6 +97,18 @@ module.exports = React.createClass({
     onChange: function (newValue) {
         this.setState({
             contents: newValue
+        });
+    },
+
+    onFocus: function () {
+        this.setState({
+            focussed: true
+        });
+    },
+
+    onBlur: function () {
+        this.setState({
+            focussed: false
         });
     },
 
@@ -67,6 +130,8 @@ module.exports = React.createClass({
                                tabSize={4}
                                width="100%"
                                onChange={this.onChange}
+                               onFocus={this.onFocus}
+                               onBlur={this.onBlur}
                                maxLines={Infinity}
                                name={name}
                                value={this.state.contents}

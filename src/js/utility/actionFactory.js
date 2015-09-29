@@ -25,6 +25,15 @@ var actionFactory = {
             type: actionConstants.FILES_UPLOAD,
             files: files
         });
+    },
+
+    /**
+     * @returns {Object}
+     */
+    createRunCurrentSlideAction: function () {
+        return _.extend({}, _blueprint, {
+            type: actionConstants.RUN_CURRENT_SLIDE
+        });
     }
 };
 
