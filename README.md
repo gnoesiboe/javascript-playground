@@ -4,6 +4,10 @@ Playground for javascript, that allows you to upen javascript files and execute 
 when clicking the run button. For presentation purposes, open your browser development console on the right to show 
 console logs. Only tested in Chrome browser.
 
+## Example
+
+![Example image](./build/images/example.png)
+
 ## Usage
 
 * Install npm dependencies with `npm install`
