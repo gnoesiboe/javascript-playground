@@ -1,5 +1,9 @@
 var React = require('react'),
-    CodemirrorComponent = require('react-codemirror');
+    AceEditor = require('react-ace'),
+    brace = require('brace');
+
+require('brace/mode/javascript');
+require('brace/theme/tomorrow_night');
 
 module.exports = React.createClass({
 
@@ -37,26 +41,36 @@ module.exports = React.createClass({
     },
 
     /**
+     * @param {String} newValue
+     */
+    onChange: function (newValue) {
+        this.setState({
+            contents: newValue
+        });
+    },
+
+    /**
      * Renders this component into it's container
      *
      * @returns {XML}
      */
     render: function () {
         var slide = this.props.slide,
-            options = {
-                indentUnit: 4,
-                indentWithTabs: false,
-                lineNumbers: true,
-                mode: 'javascript',
-                lineWrapping: true,
-                theme: 'lesser-dark'
-            };
+            name = 'editor_slide_' + slide.id;
 
         return (
             <div className="clearfix">
                 <h3>{slide.title}</h3>
                 <div className="margin-bottom-s">
-                    <CodemirrorComponent value={this.state.contents} onChange={this.onCodeChange} options={options} />
+                    <AceEditor mode="javascript"
+                               theme="tomorrow_night"
+                               tabSize={4}
+                               width="100%"
+                               onChange={this.onChange}
+                               maxLines={Infinity}
+                               name={name}
+                               value={this.state.contents}
+                               editorProps={{$blockScrolling: true}} />
                 </div>
                 <button type="button" className="btn btn-success pull-right" onClick={this.onRunClick}>run</button>
             </div>
