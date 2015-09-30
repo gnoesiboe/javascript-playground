@@ -11,14 +11,83 @@ require('./../../../node_modules/mousetrap/plugins/global-bind/mousetrap-global-
 
 module.exports = React.createClass({
 
-    componentDidMount: function () {
-        slideStore.registerListener(this.onSlideStoreChange);
+    slideStoreListenerReference: null,
 
+    componentDidMount: function () {
+        this.slideStoreListenerReference = slideStore.registerListener(this.onSlideStoreChange);
+
+        this.initKeyboardEventListeners();
+    },
+
+    initKeyboardEventListeners: function () {
         mousetrap.bindGlobal('ctrl+r', this.onRunKeyboardShortcutEntered);
+        mousetrap.bind('up', this.onMoveSelectionUpKeyboardShortcutSelected);
+        mousetrap.bind('down', this.onMoveSelectionDownKeyboardShortcutSelected);
+        mousetrap.bind('enter', this.onEnterSelectionKeyboardShortcutEntered);
+        mousetrap.bindGlobal('esc', this.onLeaveSelectionKeyboardShortcutEntered);
+    },
+
+    /**
+     * @param {Object} event
+     */
+    onLeaveSelectionKeyboardShortcutEntered: function (event) {
+        event.preventDefault();
+
+        appDispatcher.dispatch(actionFactory.createLeaveCurrentEditorAction());
+    },
+
+    /**
+     * @param {Object} event
+     */
+    onEnterSelectionKeyboardShortcutEntered: function (event) {
+        event.preventDefault();
+
+        appDispatcher.dispatch(actionFactory.createFocusCurrentEditorAction());
     },
 
     componentWillUnmount: function () {
+        slideStore.removeListener(this.slideStoreListenerReference);
+        this.slideStoreListenerReference = null;
+
+        this.removeKeyboardEventListeners();
+    },
+
+    removeKeyboardEventListeners: function () {
         mousetrap.unbind('ctrl+3');
+    },
+
+    /**
+     * @param {Object} event
+     */
+    onMoveSelectionUpKeyboardShortcutSelected: function (event) {
+        event.preventDefault();
+
+        this.moveSelectionUp();
+    },
+
+    /**
+     * @param {Object} event
+     */
+    onMoveSelectionDownKeyboardShortcutSelected: function (event) {
+        event.preventDefault();
+
+        this.moveSelectionDown();
+    },
+
+    moveSelectionUp: function () {
+        var newSelectionIndex = this.state.currentSelectionIndex === 0 ? this.state.slides.length - 1 : this.state.currentSelectionIndex - 1;
+
+        this.setState({
+            currentSelectionIndex: newSelectionIndex
+        });
+    },
+
+    moveSelectionDown: function () {
+        var newSelectionIndex = this.state.currentSelectionIndex === (this.state.slides.length - 1) ? 0 : this.state.currentSelectionIndex + 1;
+
+        this.setState({
+            currentSelectionIndex: newSelectionIndex
+        });
     },
 
     /**
@@ -46,7 +115,8 @@ module.exports = React.createClass({
      */
     getDefaultState: function () {
         return {
-            slides: slideStore.getAll()
+            slides: slideStore.getAll(),
+            currentSelectionIndex: 0
         }
     },
 
@@ -59,7 +129,8 @@ module.exports = React.createClass({
         return (
             <div>
                 <ImportFilesFormComponent />
-                <SlideListComponent slides={this.state.slides} />
+                <SlideListComponent slides={this.state.slides}
+                                    currentSelectionIndex={this.state.currentSelectionIndex} />
             </div>
         );
     }

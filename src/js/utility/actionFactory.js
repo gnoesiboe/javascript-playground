@@ -34,6 +34,24 @@ var actionFactory = {
         return _.extend({}, _blueprint, {
             type: actionConstants.RUN_CURRENT_SLIDE
         });
+    },
+
+    /**
+     * @returns {Object}
+     */
+    createFocusCurrentEditorAction: function () {
+        return _.extend({}, _blueprint, {
+            type: actionConstants.FOCUS_CURRENT_EDITOR
+        });
+    },
+
+    /**
+     * @returns {Object}
+     */
+    createLeaveCurrentEditorAction: function () {
+        return _.extend({}, _blueprint, {
+            type: actionConstants.LEAVE_CURRENT_EDITOR
+        })
     }
 };
 
