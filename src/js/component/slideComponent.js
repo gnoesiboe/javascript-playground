@@ -1,5 +1,5 @@
 var React = require('react'),
-    AceEditor = require('react-ace'),
+    CodeEditorComponent = require('./codeEditorComponent'),
     brace = require('brace'),
     appDispatcher = require('./../utility/appDispatcher'),
     actionConstants = require('./../constants/actionConstants');
@@ -125,7 +125,7 @@ module.exports = React.createClass({
             <div className="clearfix">
                 <h3>{slide.title}</h3>
                 <div className="margin-bottom-s">
-                    <AceEditor mode="javascript"
+                    <CodeEditorComponent mode="javascript"
                                theme="tomorrow_night"
                                tabSize={4}
                                width="100%"
