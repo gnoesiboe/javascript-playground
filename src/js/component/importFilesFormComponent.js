@@ -10,6 +10,8 @@ module.exports = React.createClass({
     onFileChange: function (event) {
         var action = actionFactory.createFilesUploadAction(event.target.files);
 
+        event.target.blur();
+
         appDispatcher.dispatch(action);
     },
 
