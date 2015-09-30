@@ -31,7 +31,7 @@ module.exports = React.createClass({
     onActionDispatched: function (action) {
         switch (action.type) {
             case actionConstants.RUN_CURRENT_SLIDE:
-                this.handleRunCurrentSlideAction(action);
+                this.handleRunCurrentSlideAction();
                 break;
 
             default:
@@ -40,10 +40,7 @@ module.exports = React.createClass({
         }
     },
 
-    /**
-     * @param {Object} action
-     */
-    handleRunCurrentSlideAction: function (action) {
+    handleRunCurrentSlideAction: function () {
         if (this.state.focussed !== true) {
             return;
         }
@@ -133,6 +130,7 @@ module.exports = React.createClass({
                                onFocus={this.onFocus}
                                onBlur={this.onBlur}
                                maxLines={Infinity}
+                               isCurrent={this.props.isCurrent}
                                name={name}
                                value={this.state.contents}
                                editorProps={{$blockScrolling: true}} />

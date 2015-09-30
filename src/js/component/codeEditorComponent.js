@@ -24,10 +24,21 @@
 
 */
 
-var ace = require('brace');
-var React = require('react');
+var ace = require('brace'),
+    React = require('react'),
+    appDispatcher = require('./../utility/appDispatcher'),
+    actionConstants = require('./../constants/actionConstants');
 
 module.exports = React.createClass({
+
+    /**
+     * @type {String}
+     */
+    appDispatcherHandle: null,
+
+    /**
+     * @type {String}
+     */
     displayName: 'ReactAce',
 
     /**
@@ -143,14 +154,48 @@ module.exports = React.createClass({
         this.editor.on('paste', this.onPaste);
         this.editor.on('change', this.onChange);
 
-
         if (this.props.onLoad) {
             this.props.onLoad(this.editor);
         }
+
+        this.appDispatcherHandle = appDispatcher.register(this.onActionDispatched);
     },
 
     componentWillUnmount: function () {
         this.editor = null;
+
+        appDispatcher.unregister(this.appDispatcherHandle);
+    },
+
+    /**
+     * @param {Object} action
+     */
+    onActionDispatched: function (action) {
+        switch (action.type) {
+            case actionConstants.FOCUS_CURRENT_EDITOR:
+                this.handleFocusCurrentEditorAction();
+                break;
+
+            default:
+                // do nothing as this action is not relevant for ths component
+                break;
+        }
+    },
+
+    handleFocusCurrentEditorAction: function () {
+        if (this.props.isCurrent !== true) {
+            return;
+        }
+
+        this.setFocusToEditor();
+    },
+
+    setFocusToEditor: function () {
+        if (this.editor === null) {
+            return;
+        }
+
+        this.editor.focus();
     },
 
     componentWillReceiveProps: function (nextProps) {

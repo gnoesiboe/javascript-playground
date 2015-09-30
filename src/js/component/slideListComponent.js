@@ -18,7 +18,7 @@ module.exports = React.createClass({
 
             slides.push(
                 <li key={slide.id} className={className}>
-                    <SlideComponent slide={slide} />
+                    <SlideComponent slide={slide} isCurrent={isCurrent}/>
                 </li>
             );
         }
