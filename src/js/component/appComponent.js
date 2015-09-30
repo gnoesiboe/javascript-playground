@@ -24,6 +24,16 @@ module.exports = React.createClass({
         mousetrap.bind('up', this.onMoveSelectionUpKeyboardShortcutSelected);
         mousetrap.bind('down', this.onMoveSelectionDownKeyboardShortcutSelected);
         mousetrap.bind('enter', this.onEnterSelectionKeyboardShortcutEntered);
+        mousetrap.bindGlobal('esc', this.onLeaveSelectionKeyboardShortcutEntered);
+    },
+
+    /**
+     * @param {Object} event
+     */
+    onLeaveSelectionKeyboardShortcutEntered: function (event) {
+        event.preventDefault();
+
+        appDispatcher.dispatch(actionFactory.createLeaveCurrentEditorAction());
     },
 
     /**

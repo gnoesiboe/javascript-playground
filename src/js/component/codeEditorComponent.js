@@ -176,10 +176,30 @@ module.exports = React.createClass({
                 this.handleFocusCurrentEditorAction();
                 break;
 
+            case actionConstants.LEAVE_CURRENT_EDITOR:
+                this.handleLeaveCurrentEditorAction();
+                break;
+
             default:
                 // do nothing as this action is not relevant for ths component
                 break;
         }
+    },
+
+    handleLeaveCurrentEditorAction: function () {
+        if (this.props.isCurrent !== true) {
+            return;
+        }
+
+        this.leaveEditor();
+    },
+
+    leaveEditor: function () {
+        if (this.editor === null) {
+            return;
+        }
+
+        this.editor.blur();
     },
 
     handleFocusCurrentEditorAction: function () {

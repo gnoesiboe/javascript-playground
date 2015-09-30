@@ -43,6 +43,15 @@ var actionFactory = {
         return _.extend({}, _blueprint, {
             type: actionConstants.FOCUS_CURRENT_EDITOR
         });
+    },
+
+    /**
+     * @returns {Object}
+     */
+    createLeaveCurrentEditorAction: function () {
+        return _.extend({}, _blueprint, {
+            type: actionConstants.LEAVE_CURRENT_EDITOR
+        })
     }
 };
 
