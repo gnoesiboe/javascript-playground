@@ -12,3 +12,12 @@ console logs. Only tested in Chrome browser.
 
 * Install npm dependencies with `npm install`
 * Listen for file changes using `npm start`
+
+## Navigate using keyboard shortcuts:
+
+After files uploaded:
+
+* `up` + `down`: navigate through the uploaded code snippets
+* `enter`: enter current selection. Focus editor
+* `esc`: blur focus to current editor
+* `ctr+r`: run current editor
