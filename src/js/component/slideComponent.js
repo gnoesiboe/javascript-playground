@@ -30,8 +30,8 @@ module.exports = React.createClass({
      */
     onActionDispatched: function (action) {
         switch (action.type) {
-            case actionConstants.RUN_CURRENT_SLIDE:
-                this.handleRunCurrentSlideAction();
+            case actionConstants.RUN_FOCUSSED_SLIDE:
+                this.handleRunFocussedSlideAction();
                 break;
 
             default:
@@ -40,7 +40,7 @@ module.exports = React.createClass({
         }
     },
 
-    handleRunCurrentSlideAction: function () {
+    handleRunFocussedSlideAction: function () {
         if (this.state.focussed !== true) {
             return;
         }

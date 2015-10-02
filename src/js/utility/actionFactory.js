@@ -30,9 +30,9 @@ var actionFactory = {
     /**
      * @returns {Object}
      */
-    createRunCurrentSlideAction: function () {
+    createRunFocussedSlideAction: function () {
         return _.extend({}, _blueprint, {
-            type: actionConstants.RUN_CURRENT_SLIDE
+            type: actionConstants.RUN_FOCUSSED_SLIDE
         });
     },
 

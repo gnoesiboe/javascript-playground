@@ -96,7 +96,7 @@ module.exports = React.createClass({
     onRunKeyboardShortcutEntered: function (event) {
         event.preventDefault();
 
-        appDispatcher.dispatch(actionFactory.createRunCurrentSlideAction());
+        appDispatcher.dispatch(actionFactory.createRunFocussedSlideAction());
     },
 
     onSlideStoreChange: function () {
