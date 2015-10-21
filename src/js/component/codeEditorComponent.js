@@ -238,6 +238,7 @@ module.exports = React.createClass({
         if (nextProps.onLoad) {
             nextProps.onLoad(this.editor);
         }
+        this.editor.getSession().setUseWrapMode(true);
     },
 
     render: function () {
